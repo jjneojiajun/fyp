@@ -6,6 +6,11 @@ However, it doesn't make any sense to have 4 captions in the video and thus i de
 
 Although, the user would have to follow the caption style that is used in most of the NLP Module. I believe that this is the best way to do it thus far. After the user key in the caption, it will be great to retrain the model which is what i will be doing right after.
 
+# Example 
+Note that this is not the complete one. This is just an example that i did thus far using python tkinter code which is available to read at this repository at fyp_gui.
+
+![alt text](https://i.imgur.com/NQPcycM.png)
+
 # Credits 
 Credits got to go to credit due. 
 
