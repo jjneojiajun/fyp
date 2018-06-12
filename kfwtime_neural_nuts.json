@@ -1,0 +1,722 @@
+[  
+    {  
+       "frame_no":-1,
+       "relpath":"./SIA/00001.jpg",
+       "caption":"a large body of water with a bunch of sailboats docked in it . ",
+       "start_time":0.0
+    },
+    {  
+       "frame_no":1,
+       "relpath":"./SIA/00002.jpg",
+       "caption":"a large group of people standing around a pier . ",
+       "start_time":2.08
+    },
+    {  
+       "frame_no":2,
+       "relpath":"./SIA/00003.jpg",
+       "caption":"a man in a suit standing in front of a window . ",
+       "start_time":4.04
+    },
+    {  
+       "frame_no":3,
+       "relpath":"./SIA/00004.jpg",
+       "caption":"a man is holding a skateboard in his hands . ",
+       "start_time":19.04
+    },
+    {  
+       "frame_no":4,
+       "relpath":"./SIA/00005.jpg",
+       "caption":"a man and a woman standing next to each other on a boat . ",
+       "start_time":21.04
+    },
+    {  
+       "frame_no":5,
+       "relpath":"./SIA/00006.jpg",
+       "caption":"a man standing in front of a tv holding a guitar . ",
+       "start_time":23.0
+    },
+    {  
+       "frame_no":6,
+       "relpath":"./SIA/00007.jpg",
+       "caption":"a man in a suit standing in front of a tv . ",
+       "start_time":24.6
+    },
+    {  
+       "frame_no":7,
+       "relpath":"./SIA/00008.jpg",
+       "caption":"a woman holding a creepy clown mirror sitting in front of a window . ",
+       "start_time":26.16
+    },
+    {  
+       "frame_no":8,
+       "relpath":"./SIA/00009.jpg",
+       "caption":"a man is looking at a laptop computer . ",
+       "start_time":28.0
+    },
+    {  
+       "frame_no":9,
+       "relpath":"./SIA/00010.jpg",
+       "caption":"a woman wearing a black robe and a wig . ",
+       "start_time":30.4
+    },
+    {  
+       "frame_no":10,
+       "relpath":"./SIA/00011.jpg",
+       "caption":"a man and a woman are playing a video game . ",
+       "start_time":32.36
+    },
+    {  
+       "frame_no":11,
+       "relpath":"./SIA/00012.jpg",
+       "caption":"a man and woman in a room with a man in a suit . ",
+       "start_time":36.72
+    },
+    {  
+       "frame_no":12,
+       "relpath":"./SIA/00013.jpg",
+       "caption":"a man sitting on a couch looking at a laptop . ",
+       "start_time":39.76
+    },
+    {  
+       "frame_no":13,
+       "relpath":"./SIA/00014.jpg",
+       "caption":"a man and woman sitting in a restaurant . ",
+       "start_time":39.8
+    },
+    {  
+       "frame_no":14,
+       "relpath":"./SIA/00015.jpg",
+       "caption":"a person is sitting on a bed with a hat on . ",
+       "start_time":42.72
+    },
+    {  
+       "frame_no":15,
+       "relpath":"./SIA/00016.jpg",
+       "caption":"a man sitting on a bench in front of a window . ",
+       "start_time":44.84
+    },
+    {  
+       "frame_no":16,
+       "relpath":"./SIA/00017.jpg",
+       "caption":"a man is standing in front of a window . ",
+       "start_time":47.64
+    },
+    {  
+       "frame_no":17,
+       "relpath":"./SIA/00018.jpg",
+       "caption":"a man is taking a picture of himself in a mirror . ",
+       "start_time":49.64
+    },
+    {  
+       "frame_no":18,
+       "relpath":"./SIA/00019.jpg",
+       "caption":"a man in a red shirt standing by a mirror . ",
+       "start_time":52.4
+    },
+    {  
+       "frame_no":19,
+       "relpath":"./SIA/00020.jpg",
+       "caption":"a man in a suit standing in front of a microphone . ",
+       "start_time":55.68
+    },
+    {  
+       "frame_no":20,
+       "relpath":"./SIA/00021.jpg",
+       "caption":"a woman holding a teddy bear in a window . ",
+       "start_time":58.44
+    },
+    {  
+       "frame_no":21,
+       "relpath":"./SIA/00022.jpg",
+       "caption":"a large clock mounted to the side of a wall . ",
+       "start_time":60.72
+    },
+    {  
+       "frame_no":22,
+       "relpath":"./SIA/00023.jpg",
+       "caption":"a man in a wetsuit surfing on a wave . ",
+       "start_time":62.2
+    },
+    {  
+       "frame_no":23,
+       "relpath":"./SIA/00024.jpg",
+       "caption":"a bird flying over a small bird on a wire . ",
+       "start_time":63.48
+    },
+    {  
+       "frame_no":24,
+       "relpath":"./SIA/00025.jpg",
+       "caption":"a woman and a young girl sitting on a bench . ",
+       "start_time":71.68
+    },
+    {  
+       "frame_no":25,
+       "relpath":"./SIA/00026.jpg",
+       "caption":"a woman is sitting on a chair with an umbrella . ",
+       "start_time":73.56
+    },
+    {  
+       "frame_no":26,
+       "relpath":"./SIA/00027.jpg",
+       "caption":"a man holding a cell phone in his hand . ",
+       "start_time":79.08
+    },
+    {  
+       "frame_no":27,
+       "relpath":"./SIA/00028.jpg",
+       "caption":"a boat is in the water near a dock . ",
+       "start_time":84.36
+    },
+    {  
+       "frame_no":28,
+       "relpath":"./SIA/00029.jpg",
+       "caption":"a man holding a cell phone in his hands . ",
+       "start_time":85.88
+    },
+    {  
+       "frame_no":29,
+       "relpath":"./SIA/00030.jpg",
+       "caption":"a man is sitting on a bench in a large room . ",
+       "start_time":88.44
+    },
+    {  
+       "frame_no":30,
+       "relpath":"./SIA/00031.jpg",
+       "caption":"a man and a woman are playing with a wii remote . ",
+       "start_time":90.04
+    },
+    {  
+       "frame_no":31,
+       "relpath":"./SIA/00032.jpg",
+       "caption":"a giraffe standing in a field next to trees . ",
+       "start_time":91.92
+    },
+    {  
+       "frame_no":32,
+       "relpath":"./SIA/00033.jpg",
+       "caption":"a mirror with a reflection of a man in it . ",
+       "start_time":94.44
+    },
+    {  
+       "frame_no":33,
+       "relpath":"./SIA/00034.jpg",
+       "caption":"a man and woman are looking at a cell phone . ",
+       "start_time":96.12
+    },
+    {  
+       "frame_no":34,
+       "relpath":"./SIA/00035.jpg",
+       "caption":"a man and a woman sitting on a toilet in a bathroom . ",
+       "start_time":97.48
+    },
+    {  
+       "frame_no":35,
+       "relpath":"./SIA/00036.jpg",
+       "caption":"a man with a camera and a cell phone . ",
+       "start_time":99.6
+    },
+    {  
+       "frame_no":36,
+       "relpath":"./SIA/00037.jpg",
+       "caption":"a boat is in the water near a bridge . ",
+       "start_time":101.76
+    },
+    {  
+       "frame_no":37,
+       "relpath":"./SIA/00038.jpg",
+       "caption":"a boat is docked in a dock next to a dock . ",
+       "start_time":103.12
+    },
+    {  
+       "frame_no":38,
+       "relpath":"./SIA/00039.jpg",
+       "caption":"a woman in a white top is posing for a photo . ",
+       "start_time":104.44
+    },
+    {  
+       "frame_no":39,
+       "relpath":"./SIA/00040.jpg",
+       "caption":"a woman in a black paisley button down shirt bites into a bottle . ",
+       "start_time":105.68
+    },
+    {  
+       "frame_no":40,
+       "relpath":"./SIA/00041.jpg",
+       "caption":"a man holding a toothbrush in his mouth . ",
+       "start_time":111.68
+    },
+    {  
+       "frame_no":41,
+       "relpath":"./SIA/00042.jpg",
+       "caption":"a man holding a cell phone in his hand . ",
+       "start_time":115.2
+    },
+    {  
+       "frame_no":42,
+       "relpath":"./SIA/00043.jpg",
+       "caption":"a person holding a pair of scissors in front of a mirror . ",
+       "start_time":115.24
+    },
+    {  
+       "frame_no":43,
+       "relpath":"./SIA/00044.jpg",
+       "caption":"a man is holding a dog in his hand signals . ",
+       "start_time":118.32
+    },
+    {  
+       "frame_no":44,
+       "relpath":"./SIA/00045.jpg",
+       "caption":"a man brushing his teeth with a toothbrush . ",
+       "start_time":119.76
+    },
+    {  
+       "frame_no":45,
+       "relpath":"./SIA/00046.jpg",
+       "caption":"a man holding a toothbrush in his mouth . ",
+       "start_time":122.08
+    },
+    {  
+       "frame_no":46,
+       "relpath":"./SIA/00047.jpg",
+       "caption":"a man holding a nintendo wii game controller . ",
+       "start_time":122.12
+    },
+    {  
+       "frame_no":47,
+       "relpath":"./SIA/00048.jpg",
+       "caption":"a man holding a toothbrush in his mouth . ",
+       "start_time":124.08
+    },
+    {  
+       "frame_no":48,
+       "relpath":"./SIA/00049.jpg",
+       "caption":"a man in a kitchen measuring the batting cage . ",
+       "start_time":129.52
+    },
+    {  
+       "frame_no":49,
+       "relpath":"./SIA/00050.jpg",
+       "caption":"a man is holding a cat with a toothbrush in his mouth . ",
+       "start_time":130.92
+    },
+    {  
+       "frame_no":50,
+       "relpath":"./SIA/00051.jpg",
+       "caption":"a woman is brushing her long hair . ",
+       "start_time":132.2
+    },
+    {  
+       "frame_no":51,
+       "relpath":"./SIA/00052.jpg",
+       "caption":"a man and woman are playing video games together . ",
+       "start_time":134.88
+    },
+    {  
+       "frame_no":52,
+       "relpath":"./SIA/00053.jpg",
+       "caption":"a man is standing in the dark with a large airplane . ",
+       "start_time":136.48
+    },
+    {  
+       "frame_no":53,
+       "relpath":"./SIA/00054.jpg",
+       "caption":"a woman is holding a cell phone to her ear . ",
+       "start_time":145.56
+    },
+    {  
+       "frame_no":54,
+       "relpath":"./SIA/00055.jpg",
+       "caption":"a man in a suit and tie holding a camera . ",
+       "start_time":148.2
+    },
+    {  
+       "frame_no":55,
+       "relpath":"./SIA/00056.jpg",
+       "caption":"a man is looking at his reflection in a mirror . ",
+       "start_time":152.32
+    },
+    {  
+       "frame_no":56,
+       "relpath":"./SIA/00057.jpg",
+       "caption":"a man is sitting on a bench in a park . ",
+       "start_time":154.44
+    },
+    {  
+       "frame_no":57,
+       "relpath":"./SIA/00058.jpg",
+       "caption":"a man is holding a camera in front of a mirror . ",
+       "start_time":156.6
+    },
+    {  
+       "frame_no":58,
+       "relpath":"./SIA/00059.jpg",
+       "caption":"a man is skateboarding on a rail in a park . ",
+       "start_time":164.92
+    },
+    {  
+       "frame_no":59,
+       "relpath":"./SIA/00060.jpg",
+       "caption":"a person is riding a skateboard on a ramp . ",
+       "start_time":166.72
+    },
+    {  
+       "frame_no":60,
+       "relpath":"./SIA/00061.jpg",
+       "caption":"a man brushing his teeth with a toothbrush . ",
+       "start_time":170.04
+    },
+    {  
+       "frame_no":61,
+       "relpath":"./SIA/00062.jpg",
+       "caption":"a man on a skateboard performing a trick . ",
+       "start_time":172.48
+    },
+    {  
+       "frame_no":62,
+       "relpath":"./SIA/00063.jpg",
+       "caption":"a woman with a straw hat on a brown and white dress her black and white covers her face ",
+       "start_time":176.28
+    },
+    {  
+       "frame_no":63,
+       "relpath":"./SIA/00064.jpg",
+       "caption":"a person is standing on a balcony overlooking a valley . ",
+       "start_time":179.52
+    },
+    {  
+       "frame_no":64,
+       "relpath":"./SIA/00065.jpg",
+       "caption":"a man with a beard and glasses holding a tooth brush . ",
+       "start_time":185.4
+    },
+    {  
+       "frame_no":65,
+       "relpath":"./SIA/00066.jpg",
+       "caption":"a woman is standing in front of a mirror . ",
+       "start_time":187.2
+    },
+    {  
+       "frame_no":66,
+       "relpath":"./SIA/00067.jpg",
+       "caption":"a man is brushing his teeth in the mirror . ",
+       "start_time":189.04
+    },
+    {  
+       "frame_no":67,
+       "relpath":"./SIA/00068.jpg",
+       "caption":"a man holding a camera with a tooth brush in his mouth . ",
+       "start_time":189.08
+    },
+    {  
+       "frame_no":68,
+       "relpath":"./SIA/00069.jpg",
+       "caption":"a man is holding a camera while standing in a room . ",
+       "start_time":189.68
+    },
+    {  
+       "frame_no":69,
+       "relpath":"./SIA/00070.jpg",
+       "caption":"a man holding a camera with a tooth brush in his mouth . ",
+       "start_time":189.92
+    },
+    {  
+       "frame_no":70,
+       "relpath":"./SIA/00071.jpg",
+       "caption":"a man in a suit standing in front of a mirror . ",
+       "start_time":189.96
+    },
+    {  
+       "frame_no":71,
+       "relpath":"./SIA/00072.jpg",
+       "caption":"a woman with a tie and glasses in a dress . ",
+       "start_time":192.8
+    },
+    {  
+       "frame_no":72,
+       "relpath":"./SIA/00073.jpg",
+       "caption":"a man with a beard is looking at a black and white bird . ",
+       "start_time":192.84
+    },
+    {  
+       "frame_no":73,
+       "relpath":"./SIA/00074.jpg",
+       "caption":"a woman in a black top is dancing with her bowtie . ",
+       "start_time":193.36
+    },
+    {  
+       "frame_no":74,
+       "relpath":"./SIA/00075.jpg",
+       "caption":"a woman in a black dress and a black suitcase . ",
+       "start_time":194.08
+    },
+    {  
+       "frame_no":75,
+       "relpath":"./SIA/00076.jpg",
+       "caption":"a table with a cloth and a cloth covered in art . ",
+       "start_time":196.96
+    },
+    {  
+       "frame_no":76,
+       "relpath":"./SIA/00077.jpg",
+       "caption":"a man and woman standing next to each other in the water . ",
+       "start_time":198.6
+    },
+    {  
+       "frame_no":77,
+       "relpath":"./SIA/00078.jpg",
+       "caption":"a man and a woman standing next to each other . ",
+       "start_time":198.64
+    },
+    {  
+       "frame_no":78,
+       "relpath":"./SIA/00079.jpg",
+       "caption":"a person is holding a pair of scissors . ",
+       "start_time":200.56
+    },
+    {  
+       "frame_no":79,
+       "relpath":"./SIA/00080.jpg",
+       "caption":"a man holding a toothbrush in his mouth . ",
+       "start_time":202.32
+    },
+    {  
+       "frame_no":80,
+       "relpath":"./SIA/00081.jpg",
+       "caption":"a man holding a nintendo wii game controller . ",
+       "start_time":207.8
+    },
+    {  
+       "frame_no":81,
+       "relpath":"./SIA/00082.jpg",
+       "caption":"a man holding a pair of scissors in his hands . ",
+       "start_time":209.96
+    },
+    {  
+       "frame_no":82,
+       "relpath":"./SIA/00083.jpg",
+       "caption":"a man holding a nintendo wii game controller . ",
+       "start_time":211.6
+    },
+    {  
+       "frame_no":83,
+       "relpath":"./SIA/00084.jpg",
+       "caption":"a man holding a camera with a tooth brush in his mouth . ",
+       "start_time":213.64
+    },
+    {  
+       "frame_no":84,
+       "relpath":"./SIA/00085.jpg",
+       "caption":"a woman holding a baby while brushing her teeth . ",
+       "start_time":214.92
+    },
+    {  
+       "frame_no":85,
+       "relpath":"./SIA/00086.jpg",
+       "caption":"a man brushing his teeth with a toothbrush . ",
+       "start_time":216.88
+    },
+    {  
+       "frame_no":86,
+       "relpath":"./SIA/00087.jpg",
+       "caption":"a woman in a black top and a white dress a black flowery head . ",
+       "start_time":218.08
+    },
+    {  
+       "frame_no":87,
+       "relpath":"./SIA/00088.jpg",
+       "caption":"a man with a tooth brush in his mouth . ",
+       "start_time":220.28
+    },
+    {  
+       "frame_no":88,
+       "relpath":"./SIA/00089.jpg",
+       "caption":"a group of children sitting on a bench . ",
+       "start_time":222.48
+    },
+    {  
+       "frame_no":89,
+       "relpath":"./SIA/00090.jpg",
+       "caption":"a pair of scissors on a table with needle and thread . ",
+       "start_time":226.6
+    },
+    {  
+       "frame_no":90,
+       "relpath":"./SIA/00091.jpg",
+       "caption":"a person holding a pair of scissors in front of a mirror . ",
+       "start_time":227.44
+    },
+    {  
+       "frame_no":91,
+       "relpath":"./SIA/00092.jpg",
+       "caption":"a man standing next to a woman in a field . ",
+       "start_time":227.96
+    },
+    {  
+       "frame_no":92,
+       "relpath":"./SIA/00093.jpg",
+       "caption":"a man holding a kite string while a girl is standing in the sand . ",
+       "start_time":229.92
+    },
+    {  
+       "frame_no":93,
+       "relpath":"./SIA/00094.jpg",
+       "caption":"a man is holding a skateboard in his hand . ",
+       "start_time":229.96
+    },
+    {  
+       "frame_no":94,
+       "relpath":"./SIA/00095.jpg",
+       "caption":"a woman is dancing on the stage of a party . ",
+       "start_time":231.36
+    },
+    {  
+       "frame_no":95,
+       "relpath":"./SIA/00096.jpg",
+       "caption":"a man holding a frisbee in his right hand . ",
+       "start_time":232.88
+    },
+    {  
+       "frame_no":96,
+       "relpath":"./SIA/00097.jpg",
+       "caption":"a woman in a red top is taking a picture . ",
+       "start_time":233.28
+    },
+    {  
+       "frame_no":97,
+       "relpath":"./SIA/00098.jpg",
+       "caption":"a man is taking a picture of himself in the mirror . ",
+       "start_time":234.72
+    },
+    {  
+       "frame_no":98,
+       "relpath":"./SIA/00099.jpg",
+       "caption":"a man is playing a video game in a room . ",
+       "start_time":242.96
+    },
+    {  
+       "frame_no":99,
+       "relpath":"./SIA/00100.jpg",
+       "caption":"a man is standing in front of a window . ",
+       "start_time":246.12
+    },
+    {  
+       "frame_no":100,
+       "relpath":"./SIA/00101.jpg",
+       "caption":"a man is holding a cell phone in his hand . ",
+       "start_time":248.4
+    },
+    {  
+       "frame_no":101,
+       "relpath":"./SIA/00102.jpg",
+       "caption":"a person with a sweatshirt on a snowboard . ",
+       "start_time":250.6
+    },
+    {  
+       "frame_no":102,
+       "relpath":"./SIA/00103.jpg",
+       "caption":"a man in a suit and tie looking at a television screen . ",
+       "start_time":252.92
+    },
+    {  
+       "frame_no":103,
+       "relpath":"./SIA/00104.jpg",
+       "caption":"a man in a suit standing in front of a wall with a picture on it . ",
+       "start_time":258.28
+    },
+    {  
+       "frame_no":104,
+       "relpath":"./SIA/00105.jpg",
+       "caption":"a man in a suit and tie standing in front of a window . ",
+       "start_time":262.56
+    },
+    {  
+       "frame_no":105,
+       "relpath":"./SIA/00106.jpg",
+       "caption":"a man in a suit and tie speaking on a microphone . ",
+       "start_time":265.52
+    },
+    {  
+       "frame_no":106,
+       "relpath":"./SIA/00107.jpg",
+       "caption":"a person holding a cell phone in their hand . ",
+       "start_time":269.12
+    },
+    {  
+       "frame_no":107,
+       "relpath":"./SIA/00108.jpg",
+       "caption":"a man is playing a video game in a building . ",
+       "start_time":281.24
+    },
+    {  
+       "frame_no":108,
+       "relpath":"./SIA/00109.jpg",
+       "caption":"a black and white photo of a black and white photo of a laptop . ",
+       "start_time":285.12
+    },
+    {  
+       "frame_no":109,
+       "relpath":"./SIA/00110.jpg",
+       "caption":"a man in a suit standing in front of a microphone . ",
+       "start_time":286.48
+    },
+    {  
+       "frame_no":110,
+       "relpath":"./SIA/00111.jpg",
+       "caption":"a man in a suit and tie standing in front of a television . ",
+       "start_time":289.36
+    },
+    {  
+       "frame_no":111,
+       "relpath":"./SIA/00112.jpg",
+       "caption":"a man in a suit standing in front of a tv . ",
+       "start_time":292.24
+    },
+    {  
+       "frame_no":112,
+       "relpath":"./SIA/00113.jpg",
+       "caption":"a man in a suit and tie standing in front of a television . ",
+       "start_time":294.28
+    },
+    {  
+       "frame_no":113,
+       "relpath":"./SIA/00114.jpg",
+       "caption":"a woman in a black shirt and tie in a dark room . ",
+       "start_time":299.12
+    },
+    {  
+       "frame_no":114,
+       "relpath":"./SIA/00115.jpg",
+       "caption":"a man is sitting on a couch looking at a laptop . ",
+       "start_time":304.04
+    },
+    {  
+       "frame_no":115,
+       "relpath":"./SIA/00116.jpg",
+       "caption":"a man is taking a picture of himself in a mirror . ",
+       "start_time":307.96
+    },
+    {  
+       "frame_no":116,
+       "relpath":"./SIA/00117.jpg",
+       "caption":"a man in a suit and tie standing in front of a wall . ",
+       "start_time":308.0
+    },
+    {  
+       "frame_no":117,
+       "relpath":"./SIA/00118.jpg",
+       "caption":"a woman in a black top is posing for a picture . ",
+       "start_time":319.16
+    },
+    {  
+       "frame_no":118,
+       "relpath":"./SIA/00119.jpg",
+       "caption":"a large white building with a clock on it . ",
+       "start_time":327.56
+    },
+    {  
+       "frame_no":119,
+       "relpath":"./SIA/00120.jpg",
+       "caption":"a large building with a clock tower in the background . ",
+       "start_time":327.6
+    }
+ ]
