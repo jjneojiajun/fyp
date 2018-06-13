@@ -60,7 +60,7 @@ function search(text) {
         result_container.removeChild(result_container.lastChild);
     }
 
-    kfwtimes_im2txt.forEach(function (keyframe, index) {
+    kfwtimes_final.forEach(function (keyframe, index) {
         if(keyframe.caption.indexOf(text) === -1) {
             return;
         }
@@ -117,12 +117,13 @@ function lowerBound(time) {
 video_player.addEventListener('timeupdate', function (event) {
     var idx = lowerBound(video_player.currentTime);
     flying_caption_final.textContent = kfwtimes_final[idx].caption
+
 })
 
 video_player.addEventListener('loadedmetadata', function (event) {
     word_counts = {};
     word_counts_array = [];
-    kfwtimes_im2txt.forEach(function (kfw) {
+    kfwtimes_final.forEach(function (kfw) {
         words = kfw.caption.split(' ')
         words.forEach(function (word) {
             if(!(word in word_counts)) word_counts[word] = 0;
