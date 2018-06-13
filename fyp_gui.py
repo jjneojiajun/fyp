@@ -54,9 +54,9 @@ def sel():
         selection = data_neural_nuts[i]['caption']
     elif var.get() == 3:
         selection = data_neuraltalk2[i]['caption']
-    else:
+    elif var.get() == 4:
         selection = data_imagecaptioning[i]['caption']
-    
+
     label.config(text = selection)
 
 def nextImage():
@@ -64,34 +64,59 @@ def nextImage():
     global i
     global final_captions
 
-    final_captions.append({
-        "start_time":data_im2txt[i]['start_time'],
-        "relpath":data_im2txt[i]['relpath'],
-        "frame_no":data_im2txt[i]['frame_no'],
-        "caption":selection
-    })
+    print(i)
+    
+    if (selection == ""):
+        label.config(text="Please select a caption!")
 
-    pprint(final_captions)
+    else:
+        final_captions.append({
+            "start_time":data_im2txt[i]['start_time'],
+            "relpath":data_im2txt[i]['relpath'],
+            "frame_no":data_im2txt[i]['frame_no'],
+            "caption":selection
+        })
 
-    i += 1
+        # pprint(final_captions)
+        selection = ""
 
-    path = data_im2txt[i]['relpath']
+        if (i < length-1):
+            i += 1
 
-    img2 = Image.open(path)
-    img2 = img2.resize((256, 154), Image.ANTIALIAS)
-    img2 = ImageTk.PhotoImage(img2)
+            path = data_im2txt[i]['relpath']
 
-    panel.configure(image=img2)
-    panel.image = img2
+            img2 = Image.open(path)
+            img2 = img2.resize((256, 154), Image.ANTIALIAS)
+            img2 = ImageTk.PhotoImage(img2)
 
-    start_time.configure(text="Start Time: " + str(data_im2txt[i]['start_time']) + " - " + str(data_im2txt[i+1]['start_time']-0.01))
+            panel.configure(image=img2)
+            panel.image = img2
 
-    R1.configure(text = data_im2txt[i]['caption'])
-    R2.configure(text = data_neural_nuts[i]['caption'])
-    R3.configure(text = data_neuraltalk2[i]['caption'])
-    R4.configure(text = data_imagecaptioning[i]['caption'])
+            if (i < length-1):
+                start_time.configure(text="Start Time: " + str(data_im2txt[i]['start_time']) + " - " + str(data_im2txt[i+1]['start_time']-0.01))
+            else:
+                start_time.configure(text="Start Time: " + str(data_im2txt[i]['start_time']))
 
-    label.configure(text = "")
+            R1.configure(text = data_im2txt[i]['caption'])
+            R2.configure(text = data_neural_nuts[i]['caption'])
+            R3.configure(text = data_neuraltalk2[i]['caption'])
+            R4.configure(text = data_imagecaptioning[i]['caption'])
+            
+            label.configure(text = "")            
+        else:
+            next_button.destroy()
+
+            save_button = Button(root, text="Save", command=saveJson)
+            save_button.pack(side=LEFT)
+
+
+def saveJson():
+    global final_captions
+
+    with open('kfwtime_final.json', 'w') as fp:
+        json.dump(final_captions, fp)
+    
+    root.destroy()
 
 root = Tk()
 img = Image.open(path)
@@ -110,24 +135,29 @@ start_time = Label(root, text="Start Time: " + str(data_im2txt[i]['start_time'])
 start_time.pack(anchor=W, pady=10)
 
 R1 = Radiobutton(root, text=data_im2txt[i]['caption'], variable=var, value=1,
-                  command=sel)
+                    command=sel)
 R1.pack()
 
 R2 = Radiobutton(root, text=data_neural_nuts[i]['caption'], variable=var, value=2,
-                  command=sel)
+                    command=sel)
 R2.pack()
 
 R3 = Radiobutton(root, text=data_neuraltalk2[i]['caption'], variable=var, value=3,
-                  command=sel)
+                    command=sel)
 R3.pack()
 
 R4 = Radiobutton(root, text=data_imagecaptioning[i]['caption'], variable=var, value=4, command=sel)
 R4.pack()
+
+# R5 = Radiobutton(root, text="Type your own caption", variable = var, value=5, command = sel)
+# R5.pack()
 
 label = Label(root)
 label.pack()
 
 next_button = Button(root, text="Next", command=nextImage)
 next_button.pack(side=RIGHT)
+
+
 
 root.mainloop()
