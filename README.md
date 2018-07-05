@@ -20,7 +20,7 @@ It is still a beta prototype which I am still figuring out how to improve.
 # GUI Example 
 Note that this is not the complete one. This is just an example that i did thus far using python tkinter code which is available to read at this repository at fyp_gui.
 
-![alt text](https://i.imgur.com/NQPcycM.png)
+![alt text](https://i.imgur.com/7hdU8vI.png)
 
 # Web Example 
 
