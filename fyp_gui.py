@@ -51,8 +51,7 @@ def sel():
     global i
     global selection
     
-    if user_caption != "":
-        deleteEntry()
+    disableEntry()
         
     if var.get() == 1: 
         selection = data_im2txt[i]['caption']
@@ -67,16 +66,14 @@ def sel():
 
 def createEntry():
     global selection
-    global user_caption
 
     selection = ""
     label.config(text="")
 
-    user_caption = Entry(root)
-    user_caption.grid(row=8, column=2, sticky=W, padx=10)
+    user_caption.config(state="normal")
 
-def deleteEntry():
-    user_caption.destroy()
+def disableEntry():
+    user_caption.config(state="disabled")
 
 # Next Button is pressed! 
 def nextImage():
@@ -113,8 +110,7 @@ def nextImage():
 
         # pprint(final_captions)
         selection = ""
-        deleteEntry()
-
+    
         nextImageProcess()
     
     pprint(final_captions)
@@ -212,8 +208,11 @@ R3.grid(row=4, column = 2, sticky = W)
 R4 = Radiobutton(root, text=data_imagecaptioning[i]['caption'], variable=var, value=4, command=sel)
 R4.grid(row=5, column = 2, sticky = W)
 
-R5 = Radiobutton(root, text="Type your own caption", variable = var, value=5, command = createEntry)
+R5 = Radiobutton(root, text="Type your own captions: ", variable = var, value=5, command = createEntry)
 R5.grid(row=6, column=2, sticky = W)
+
+user_caption = Entry(root, state='disabled')
+user_caption.grid(row=6, column=2, sticky=E, padx=10)
 
 label = Label(root)
 label.grid(row=8, column= 1, columnspan = 2, sticky = W+E+N+S)
