@@ -2,6 +2,7 @@ from tkinter import *
 from PIL import ImageTk, Image
 import json
 from pprint import pprint
+import datetime
 
 ### Whats next?
 # While loop for the changing of i, need to get the length of json (DONE)
@@ -146,13 +147,39 @@ def nextImageProcess():
         next_button.destroy()
 
         save_button = Button(root, text="Save", command=saveJson)
-        save_button.grid(row = 7, column = 1, columnspan = 2, padx = 5)
-        
+        save_button.grid(row = 9, column = 1, columnspan = 2, padx = 5)
+
+# def prevImage():
+#     global i
+
+#     path = data_im2txt[i-1]['relpath']
+
+#     img2 = Image.open(path)
+#     img2 = img2.resize((350, 197), Image.ANTIALIAS)
+#     img2 = ImageTk.PhotoImage(img2)
+
+#     panel.configure(image=img2)
+#     panel.image = img2
+
+#     if (i < length-1):
+#         start_time.configure(text="Start Time: " + str(data_im2txt[i-1]['start_time']) + " - " + str(data_im2txt[i]['start_time']-0.01))
+#     else:
+#         start_time.configure(text="Start Time: " + str(data_im2txt[i-1]['start_time']))
+
+#     R1.configure(text = data_im2txt[i-1]['caption'])
+#     R2.configure(text = data_neural_nuts[i-1]['caption'])
+#     R3.configure(text = data_neuraltalk2[i-1]['caption'])
+#     R4.configure(text = data_imagecaptioning[i-1]['caption'])
+            
+#     label.configure(text = "")            
+
 # Saving the json file maybe interesting ? :D
 def saveJson():
     global final_captions
 
-    with open('kfwtime_final.json', 'w') as fp:
+    filename = "kfwtime_final" + str(datetime.datetime.now()) + ".json"
+
+    with open(filename, 'w') as fp:
         json.dump(final_captions, fp)
     
     root.destroy()
@@ -183,7 +210,7 @@ img = img.resize((350, 197), Image.ANTIALIAS)
 img = ImageTk.PhotoImage(img)
 
 panel = Label(root, image = img)
-panel.grid(row = 0, column= 1, rowspan = 7, padx = 5, pady = 50)
+panel.grid(row = 0, column= 1, rowspan = 9, padx = 5, pady = 50)
 
 var = IntVar()
 
@@ -211,15 +238,13 @@ R4.grid(row=5, column = 2, sticky = W)
 R5 = Radiobutton(root, text="Type your own captions: ", variable = var, value=5, command = createEntry)
 R5.grid(row=6, column=2, sticky = W)
 
-user_caption = Entry(root, state='disabled')
-user_caption.grid(row=6, column=2, sticky=E, padx=10)
+user_caption = Entry(root, width = 45, state='disabled')
+user_caption.grid(row=7, column=2, sticky = (N, W), padx = 25, pady = 5)
 
 label = Label(root)
 label.grid(row=8, column= 1, columnspan = 2, sticky = W+E+N+S)
 
 next_button = Button(root, text="Next", command=nextImage)
-next_button.grid(row = 9, column = 1, columnspan = 2)
-
-
+next_button.grid(row = 9, column = 1, columnspan = 2, padx = 10)
 
 root.mainloop()
