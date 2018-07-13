@@ -2,7 +2,6 @@ from tkinter import *
 from PIL import ImageTk, Image
 import json
 from pprint import pprint
-import datetime
 
 ### Whats next?
 # While loop for the changing of i, need to get the length of json (DONE)
@@ -177,9 +176,7 @@ def nextImageProcess():
 def saveJson():
     global final_captions
 
-    filename = "kfwtime_final" + str(datetime.datetime.now()) + ".json"
-
-    with open(filename, 'w') as fp:
+    with open('kfwtime_final.json', 'w') as fp:
         json.dump(final_captions, fp)
     
     root.destroy()
