@@ -1,6 +1,7 @@
 from tkinter import *
 from PIL import ImageTk, Image
 import json
+import datetime
 from pprint import pprint
 
 ### Whats next?
@@ -110,6 +111,8 @@ def nextImage():
 
         # pprint(final_captions)
         selection = ""
+
+        user_caption.delete(0, 'end')
     
         nextImageProcess()
     
@@ -176,7 +179,9 @@ def nextImageProcess():
 def saveJson():
     global final_captions
 
-    with open('kfwtime_final.json', 'w') as fp:
+    jsonfile = "kfwtime_final" + datetime.datetime.now() + ".json"
+
+    with open('', 'w') as fp:
         json.dump(final_captions, fp)
     
     root.destroy()
