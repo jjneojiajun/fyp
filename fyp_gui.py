@@ -82,38 +82,51 @@ def nextImage():
     global i
     global final_captions
 
-    print(i)
-    
+    previous_button.config(state="normal")
+
     if (selection == "" and user_caption == ""):
         label.config(text="Please select or create a caption!")
 
     # User Selected caption from radio buttons
     elif selection:
-        final_captions.append({
-            "start_time":data_im2txt[i]['start_time'],
-            "relpath":data_im2txt[i]['relpath'],
-            "frame_no":data_im2txt[i]['frame_no'],
-            "caption":selection
-        })
+        if len(final_captions) == i: 
+            final_captions.append({
+                "start_time":data_im2txt[i]['start_time'],
+                "relpath":data_im2txt[i]['relpath'],
+                "frame_no":data_im2txt[i]['frame_no'],
+                "caption":selection
+            })
+        elif final_captions[i]['caption'] is not None:
+            final_captions[i] = {       
+                "start_time":data_im2txt[i]['start_time'],
+                "relpath":data_im2txt[i]['relpath'],
+                "frame_no":data_im2txt[i]['frame_no'],
+                "caption":selection
+            }
 
         selection = ""
-
         nextImageProcess()
 
     # User's Typed Caption
     else:
-        final_captions.append({
-            "start_time":data_im2txt[i]['start_time'],
-            "relpath":data_im2txt[i]['relpath'],
-            "frame_no":data_im2txt[i]['frame_no'],
-            "caption":user_caption.get()
-        })
+        if len(final_captions) == i:
+            final_captions.append({
+                "start_time":data_im2txt[i]['start_time'],
+                "relpath":data_im2txt[i]['relpath'],
+                "frame_no":data_im2txt[i]['frame_no'],
+                "caption":user_caption.get()
+            })
+        elif final_captions[i]['caption'] is not None:
+            final_captions[i] = {       
+                "start_time":data_im2txt[i]['start_time'],
+                "relpath":data_im2txt[i]['relpath'],
+                "frame_no":data_im2txt[i]['frame_no'],
+                "caption":user_caption.get()
+            }
 
         # pprint(final_captions)
         selection = ""
-
         user_caption.delete(0, 'end')
-    
         nextImageProcess()
     
     pprint(final_captions)
@@ -150,30 +163,36 @@ def nextImageProcess():
 
         save_button = Button(root, text="Save", command=saveJson)
         save_button.grid(row = 9, column = 1, columnspan = 2, padx = 5)
+    
+def prevImage():
+    global i
+    global final_captions
 
-# def prevImage():
-#     global i
+    i = i - 1
 
-#     path = data_im2txt[i-1]['relpath']
+    if i == 0:
+        previous_button.config(state="disabled")
 
-#     img2 = Image.open(path)
-#     img2 = img2.resize((350, 197), Image.ANTIALIAS)
-#     img2 = ImageTk.PhotoImage(img2)
+    path = data_im2txt[i]['relpath']
 
-#     panel.configure(image=img2)
-#     panel.image = img2
+    img2 = Image.open(path)
+    img2 = img2.resize((350, 197), Image.ANTIALIAS)
+    img2 = ImageTk.PhotoImage(img2)
 
-#     if (i < length-1):
-#         start_time.configure(text="Start Time: " + str(data_im2txt[i-1]['start_time']) + " - " + str(data_im2txt[i]['start_time']-0.01))
-#     else:
-#         start_time.configure(text="Start Time: " + str(data_im2txt[i-1]['start_time']))
+    panel.configure(image=img2)
+    panel.image = img2
 
-#     R1.configure(text = data_im2txt[i-1]['caption'])
-#     R2.configure(text = data_neural_nuts[i-1]['caption'])
-#     R3.configure(text = data_neuraltalk2[i-1]['caption'])
-#     R4.configure(text = data_imagecaptioning[i-1]['caption'])
+    if (i < length-1):
+        start_time.configure(text="Start Time: " + str(data_im2txt[i]['start_time']) + " - " + str(data_im2txt[i+1]['start_time']-0.01))
+    else:
+        start_time.configure(text="Start Time: " + str(data_im2txt[i]['start_time']))
+
+    R1.configure(text = data_im2txt[i]['caption'])
+    R2.configure(text = data_neural_nuts[i]['caption'])
+    R3.configure(text = data_neuraltalk2[i]['caption'])
+    R4.configure(text = data_imagecaptioning[i]['caption'])
             
-#     label.configure(text = "")            
+    label.config(text = "Selected Caption: " + " ' " + final_captions[i]['caption'] + " ' ")
 
 # Saving the json file maybe interesting ? :D
 def saveJson():
@@ -181,7 +200,7 @@ def saveJson():
 
     jsonfile = "kfwtime_final" + datetime.datetime.now() + ".json"
 
-    with open('', 'w') as fp:
+    with open(jsonfile, 'w') as fp:
         json.dump(final_captions, fp)
     
     root.destroy()
@@ -248,5 +267,8 @@ label.grid(row=8, column= 1, columnspan = 2, sticky = W+E+N+S)
 
 next_button = Button(root, text="Next", command=nextImage)
 next_button.grid(row = 9, column = 1, columnspan = 2, padx = 10)
+
+previous_button = Button(root, text="Previous", state=DISABLED, command=prevImage)
+previous_button.grid(row=9, column = 2, columnspan = 2, padx = 40)
 
 root.mainloop()
