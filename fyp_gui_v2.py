@@ -3,7 +3,7 @@ from PIL import ImageTk, Image
 from tkinter.filedialog import askdirectory
 import json
 import datetime
-import os
+import os, glob
 from pathlib import Path
 from pprint import pprint
 
@@ -15,7 +15,9 @@ selection = ""
 user_caption = ""
 dirname = ""
 img = ""
+video = ""
 length = 0
+progress_no = 0
 
 data_im2txt = []
 data_neural_nuts = []
@@ -53,7 +55,7 @@ def NewFile():
 
 def OpenFile():
     global dirname
-    dirname = askdirectory(initialdir="./", title = "Choose a Directory.") 
+    dirname = askdirectory(initialdir=os.getcwd(), title = "Choose a Directory.") 
     print(dirname)
     loadJson()
 
@@ -66,6 +68,11 @@ def loadJson():
     global i
     global img
     global length
+    global video
+
+    for file in os.listdir(dirname):
+        if file.endswith(".mp4"):
+            video = file
 
     # import the json files into the GUI
     im2txt_path = dirname + '/kfwtime_im2txt.json'
@@ -111,9 +118,16 @@ def loadJson():
     firstEnable()
 
 def firstEnable():
+    global progress_no
+
+    progress_no = i + 1
+    total_no = len(data_im2txt)
+
     panel.config(state="normal", image=img)
     title.config(state="normal")
-    start_time.config(state="normal", text="Start Time: " + str(data_im2txt[i]['start_time']) + " - " + str(data_im2txt[i+1]['start_time']-0.01)[0:3])
+    start_time.config(state="normal", text="Start Time: " + str(data_im2txt[i]['start_time']) + " - " + str(data_im2txt[i+1]['start_time']-0.01))
+    video_name.config(state="normal", text="Video File: " + str(video))
+    progress.config(state="normal", text= "Progress: " +  str(progress_no) + " / " + str(total_no))
     R1.config(state="normal", text=data_im2txt[i]['caption'],)
     R2.config(state="normal", text=data_neural_nuts[i]['caption'],)
     R3.config(state="normal", text=data_neuraltalk2[i]['caption'],)
@@ -154,8 +168,6 @@ def disableEntry():
 # Next Button is pressed! 
 def nextImage():
     global selection
-    global i
-    global final_captions
 
     previous_button.config(state="normal")
 
@@ -209,9 +221,13 @@ def nextImage():
 # This is pretty much duplicate code if i re-use it, thus i created a function simply just for that.
 def nextImageProcess():
     global i
+    global progress_no 
+    total_no = len(data_im2txt)
 
     if (i < length-1):
+        
         i += 1
+        progress_no += 1
 
         path = data_im2txt[i]['relpath']
 
@@ -224,8 +240,11 @@ def nextImageProcess():
 
         if (i < length-1):
             start_time.configure(text="Start Time: " + str(data_im2txt[i]['start_time']) + " - " + str(data_im2txt[i+1]['start_time']-0.01)[0:3])
+            progress.config(text= "Progress: " +  str(progress_no) + " / " + str(total_no))
         else:
             start_time.configure(text="Start Time: " + str(data_im2txt[i]['start_time'])[0:3])
+            progress.config(text= "Progress: " +  str(total_no) + " / " + str(total_no))
+
 
         R1.configure(text = data_im2txt[i]['caption'])
         R2.configure(text = data_neural_nuts[i]['caption'])
@@ -238,7 +257,6 @@ def nextImageProcess():
     
 def prevImage():
     global i
-    global final_captions
 
     i = i - 1
 
@@ -268,18 +286,124 @@ def prevImage():
 
 # Saving the json file maybe interesting ? :D
 def saveJson():
-    global final_captions
+    jsonfile = dirname + "/kfwtime_final.json"
 
     # Remove the past json file
-    if dirname + '/kfwtime_final.json' is not None:
-        os.remove("kfwtime_final.json")
-    
-    # Create a new json file
-    jsonfile = "kfwtime_final.json"
+    try:
+        if dirname + '/kfwtime_final.json' is not None:
+            os.remove("kfwtime_final.json")
 
-    with open(jsonfile, 'w') as fp:
-        json.dump(final_captions, fp)
+        with open(jsonfile, 'w') as fp:
+            json.dump(final_captions, fp)
+
+    except FileNotFoundError:
+        with open(jsonfile, 'w') as fp:
+            json.dump(final_captions, fp)
     
+def saveSRT(): 
+    saveJson()
+
+    srt_version = []
+
+    for i in range(0,len(final_captions)):
+        if len(final_captions) != i :
+            start_minutes = int(final_captions[i]['start_time']/60)
+            start_seconds = int(final_captions[i]['start_time'] - (60 * start_minutes))
+            start_milliseconds = int((final_captions[i]['start_time'] - (60 * start_minutes) - start_seconds) * 1000000)
+            start_time = datetime.time(0,start_minutes, start_seconds, start_milliseconds)
+
+            end_minutes = int(final_captions[i+1]['start_time']/60)
+            end_seconds = int(final_captions[i+1]['start_time'] - (60 * end_minutes))
+            end_milliseconds = int((final_captions[i+1]['start_time'] - (60 * end_minutes) - end_seconds) * 1000000)
+            end_time = datetime.time(0, end_minutes, end_seconds, end_milliseconds)
+
+            srt_version.append({
+                "start_time": start_time.strftime('%H:%M:%S,%f'),
+                "end_time": end_time.strftime('%H:%M:%S,%f'),
+                "caption": final_captions[i]['caption'],
+            })
+        else: 
+            start_minutes = int(final_captions[i]['start_time']/60)
+            start_seconds = int(final_captions[i]['start_time'] - (60 * start_minutes))
+            start_milliseconds = int((final_captions[i]['start_time'] - (60 * start_minutes) - start_seconds) * 1000000)
+            start_time = datetime.time(0,start_minutes, start_seconds, start_milliseconds)
+
+            end_minutes = int(data_im2txt[i+1]['start_time']/60)
+            end_seconds = int(data_im2txt[i+1]['start_time'] - (60 * end_minutes))
+            end_milliseconds = int((data_im2txt[i+1]['start_time'] - (60 * end_minutes) - end_seconds) * 1000000)
+            end_time = datetime.time(0, end_minutes, end_seconds, end_milliseconds)
+            
+            srt_version.append({
+                "start_time": start_time.strftime('%H:%M:%S,%f'),
+                "end_time": end_time.strftime('%H:%M:%S,%f'),
+                "caption": final_captions[i]['caption'],
+            })
+
+        i = i + 1
+
+    for i in range(0, len(srt_version)):
+        with open('test.srt', 'a') as the_file:
+            the_file.write(str(i + 1) + "\n")
+            the_file.write(str(srt_version[i]['start_time'][:-3] + " --> " + str(srt_version[i]['end_time'][:-3]) + "\n"))
+            the_file.write(srt_version[i]['caption'] + "\n")
+            the_file.write("\n")
+
+def saveWebVTT():
+    saveJson()
+
+    webVTT_version = []
+
+    for i in range(0,len(final_captions)):
+
+        if len(final_captions) != i:
+            start_minutes = int(final_captions[i]['start_time']/60)
+            start_seconds = int(final_captions[i]['start_time'] - (60 * start_minutes))
+            start_milliseconds = int((final_captions[i]['start_time'] - (60 * start_minutes) - start_seconds) * 1000000)
+            start_time = datetime.time(0,start_minutes, start_seconds, start_milliseconds)
+
+            end_minutes = int(final_captions[i+1]['start_time']/60)
+            end_seconds = int(final_captions[i+1]['start_time'] - (60 * end_minutes))
+            end_milliseconds = int((final_captions[i+1]['start_time'] - (60 * end_minutes) - end_seconds) * 1000000)
+            end_time = datetime.time(0, end_minutes, end_seconds, end_milliseconds)
+
+            webVTT_version.append({
+                "start_time": start_time.strftime('%H:%M:%S,%f'),
+                "end_time": end_time.strftime('%H:%M:%S,%f'),
+                "caption": final_captions[i]['caption'],            
+            })
+
+        else:
+            start_minutes = int(final_captions[i]['start_time']/60)
+            start_seconds = int(final_captions[i]['start_time'] - (60 * start_minutes))
+            start_milliseconds = int((final_captions[i]['start_time'] - (60 * start_minutes) - start_seconds) * 1000000)
+            start_time = datetime.time(0,start_minutes, start_seconds, start_milliseconds)
+
+            end_minutes = int(data_im2txt[i+1]['start_time']/60)
+            end_seconds = int(data_im2txt[i+1]['start_time'] - (60 * end_minutes))
+            end_milliseconds = int((data_im2txt[i+1]['start_time'] - (60 * end_minutes) - end_seconds) * 1000000)
+            end_time = datetime.time(0, end_minutes, end_seconds, end_milliseconds)
+
+            webVTT_version.append({
+                "start_time": start_time.strftime('%H:%M:%S,%f'),
+                "end_time": end_time.strftime('%H:%M:%S,%f'),
+                "caption": final_captions[i]['caption'],            
+            })
+
+        i = i + 1
+    
+    video_vtt = video + ".vtt"
+
+    with open(video_vtt, 'a') as vtt_file:
+        vtt_file.write("WEBVTT \n")
+        vtt_file.write("\n")
+
+    for i in range(0, len(webVTT_version)):
+        with open(video_vtt, 'a') as vtt_file:
+            vtt_file.write(str(i + 1) + "\n")
+            vtt_file.write(str(webVTT_version[i]['start_time'][:-3] + " --> " + str(webVTT_version[i]['end_time'][:-3]) + "\n"))
+            vtt_file.write(webVTT_version[i]['caption'] + "\n")
+            vtt_file.write("\n")
+
 # The main part of the GUI (Here we can then adjust into grid from pack!)
 
 root = Tk()
@@ -288,9 +412,11 @@ root.config(menu=menu)
 
 filemenu = Menu(menu)
 menu.add_cascade(label="File", menu=filemenu)
-filemenu.add_command(label="New", command=NewFile)
-filemenu.add_command(label="Open...", command=OpenFile)
-filemenu.add_command(label="Save...", command=saveJson)
+filemenu.add_command(label="New", command=NewFile) # New Session Rather Than Previous Session
+filemenu.add_command(label="Open...", command=OpenFile) # Load Previous Session
+filemenu.add_command(label="Save as JSON...", command=saveJson) # Save a Json Will be Used for SRT and WebVTT 
+filemenu.add_command(label="Save as SRT...", command=saveSRT)
+filemenu.add_command(label="Save as WebVTT...", command=saveWebVTT)
 filemenu.add_separator()
 filemenu.add_command(label="Exit", command=root.quit)
         
@@ -313,6 +439,9 @@ root.geometry('%dx%d+%d+%d' % (w, h, x, y))
 panel = Label(root, state=DISABLED)
 panel.grid(row = 0, column= 1, rowspan = 9, padx = 5, pady = 50)
 
+video_name = Label(root, state=DISABLED)
+video_name.grid(row = 7, column = 1, rowspan = 9, padx=5, pady = 30)
+
 var = IntVar()
 
 title = Label(root, state=DISABLED, text="Please select the most accurate caption:")
@@ -321,34 +450,39 @@ title.grid(row = 0, column = 2, sticky = W, padx = 5, pady = (50, 0))
 start_time = Label(root, state=DISABLED)
 start_time.grid(row = 1, column = 2, sticky = W, padx = 5)
 
+progress = Label(root, state=DISABLED)
+progress.grid(row = 2, column = 2, sticky = W)
+
 R1 = Radiobutton(root, state=DISABLED, variable=var, value=1,
                     command=sel)
-R1.grid(row=2, column = 2, sticky = W)
+R1.grid(row=3, column = 2, sticky = W)
 
 R2 = Radiobutton(root, state=DISABLED, variable=var, value=2,
                     command=sel)
-R2.grid(row=3, column = 2, sticky = W)
+R2.grid(row=4, column = 2, sticky = W)
 
 R3 = Radiobutton(root, state=DISABLED, variable=var, value=3,
                     command=sel)
-R3.grid(row=4, column = 2, sticky = W)
+R3.grid(row=5, column = 2, sticky = W)
 
 R4 = Radiobutton(root, state=DISABLED, variable=var, value=4, command=sel)
-R4.grid(row=5, column = 2, sticky = W)
+R4.grid(row=6, column = 2, sticky = W)
 
 R5 = Radiobutton(root, state=DISABLED, variable = var, value=5, command = createEntry)
-R5.grid(row=6, column=2, sticky = W)
+R5.grid(row=7, column=2, sticky = W)
 
 user_caption = Entry(root, width = 45, state=DISABLED)
-user_caption.grid(row=7, column=2, sticky = (N, W), padx = 25, pady = 5)
+user_caption.grid(row=8, column=2, sticky = (N, W), padx = 25, pady = 5)
 
 label = Label(root)
-label.grid(row=8, column= 1, columnspan = 2, sticky = W+E+N+S)
-
-next_button = Button(root, text="Next", state=DISABLED, command=nextImage)
-next_button.grid(row = 9, column = 1, columnspan = 2, padx = 10)
+label.grid(row=9, column= 1, columnspan = 2, sticky = W+E+N+S)
 
 previous_button = Button(root, text="Previous", state=DISABLED, command=prevImage)
-previous_button.grid(row=9, column = 2, columnspan = 2, padx = 40)
+previous_button.grid(row=10, column = 1, columnspan = 2, padx = 10)
+
+next_button = Button(root, text="Next", state=DISABLED, command=nextImage)
+next_button.grid(row = 10, column = 2, columnspan = 2, padx = 20)
+
+
 
 root.mainloop()
