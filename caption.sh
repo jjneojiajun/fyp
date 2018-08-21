@@ -110,6 +110,8 @@ python3 ./fyp_gui.py
 # Remove the previous loadvid javascript file catered for another user.
 rm -f loadvid.js
 
+
+
 cat << EOF > loadvid.js
 fetchJSONFile('kfwtime_final.json', function (data) {
     // Pass it to global variable
@@ -117,6 +119,7 @@ fetchJSONFile('kfwtime_final.json', function (data) {
 });
 
 video_player.src="$(python -c "import os.path; print os.path.relpath('$video_dir', '.')")/$video_filename"
+vid_subs.src="./test.vtt"
 video_player.width=640
 video_player.height=360
 EOF

@@ -6,6 +6,7 @@ import datetime
 import os, glob
 from pathlib import Path
 from pprint import pprint
+import subprocess
 
 # Create a dictionary variable to start storing the caption into 1 json file
 final_captions = {}
@@ -18,6 +19,7 @@ img = ""
 video = ""
 length = 0
 progress_no = 0
+duration = ""
 
 data_im2txt = []
 data_neural_nuts = []
@@ -69,10 +71,20 @@ def loadJson():
     global img
     global length
     global video
+    global duration
 
     for file in os.listdir(dirname):
         if file.endswith(".mp4"):
             video = file
+    
+    result = subprocess.Popen(["ffprobe", video],
+        stdout = subprocess.PIPE, stderr = subprocess.STDOUT
+    )
+
+    for x in result.stdout.readlines():
+      if b"Duration" in x:
+          duration = (x[12:23])
+          break
 
     # import the json files into the GUI
     im2txt_path = dirname + '/kfwtime_im2txt.json'
@@ -242,9 +254,8 @@ def nextImageProcess():
             start_time.configure(text="Start Time: " + str(data_im2txt[i]['start_time']) + " - " + str(data_im2txt[i+1]['start_time']-0.01)[0:3])
             progress.config(text= "Progress: " +  str(progress_no) + " / " + str(total_no))
         else:
-            start_time.configure(text="Start Time: " + str(data_im2txt[i]['start_time'])[0:3])
+            start_time.configure(text="Start Time: " + str(data_im2txt[i]['start_time'])[0:3] + " - END")
             progress.config(text= "Progress: " +  str(total_no) + " / " + str(total_no))
-
 
         R1.configure(text = data_im2txt[i]['caption'])
         R2.configure(text = data_neural_nuts[i]['caption'])
@@ -303,10 +314,16 @@ def saveJson():
 def saveSRT(): 
     saveJson()
 
+    try:
+        if dirname + '/test.srt' is not None:
+            os.remove("test.srt")
+    except FileNotFoundError: 
+        print("File Not Found! Proceeding Anyways.")
+
     srt_version = []
 
     for i in range(0,len(final_captions)):
-        if len(final_captions) != i :
+        if len(final_captions) != i+1 :
             start_minutes = int(final_captions[i]['start_time']/60)
             start_seconds = int(final_captions[i]['start_time'] - (60 * start_minutes))
             start_milliseconds = int((final_captions[i]['start_time'] - (60 * start_minutes) - start_seconds) * 1000000)
@@ -323,21 +340,39 @@ def saveSRT():
                 "caption": final_captions[i]['caption'],
             })
         else: 
-            start_minutes = int(final_captions[i]['start_time']/60)
-            start_seconds = int(final_captions[i]['start_time'] - (60 * start_minutes))
-            start_milliseconds = int((final_captions[i]['start_time'] - (60 * start_minutes) - start_seconds) * 1000000)
-            start_time = datetime.time(0,start_minutes, start_seconds, start_milliseconds)
+            if len(final_captions) == i+1 and len(final_captions) == len(data_im2txt):
+                start_minutes = int(final_captions[i]['start_time']/60)
+                start_seconds = int(final_captions[i]['start_time'] - (60 * start_minutes))
+                start_milliseconds = int((final_captions[i]['start_time'] - (60 * start_minutes) - start_seconds) * 1000000)
+                start_time = datetime.time(0,start_minutes, start_seconds, start_milliseconds)
 
-            end_minutes = int(data_im2txt[i+1]['start_time']/60)
-            end_seconds = int(data_im2txt[i+1]['start_time'] - (60 * end_minutes))
-            end_milliseconds = int((data_im2txt[i+1]['start_time'] - (60 * end_minutes) - end_seconds) * 1000000)
-            end_time = datetime.time(0, end_minutes, end_seconds, end_milliseconds)
-            
-            srt_version.append({
-                "start_time": start_time.strftime('%H:%M:%S,%f'),
-                "end_time": end_time.strftime('%H:%M:%S,%f'),
-                "caption": final_captions[i]['caption'],
-            })
+                end_minutes = int(duration.decode("utf-8")[3:5])
+                end_seconds = int(duration.decode("utf-8")[6:8])
+                end_milliseconds = int(duration.decode("utf-8")[9:])
+                end_time = datetime.time(0, end_minutes, end_seconds, end_milliseconds)
+
+                srt_version.append({
+                    "start_time": start_time.strftime('%H:%M:%S,%f'),
+                    "end_time": end_time.strftime('%H:%M:%S,%f'),
+                    "caption": final_captions[i]['caption'],
+                })
+                
+            else:
+                start_minutes = int(final_captions[i]['start_time']/60)
+                start_seconds = int(final_captions[i]['start_time'] - (60 * start_minutes))
+                start_milliseconds = int((final_captions[i]['start_time'] - (60 * start_minutes) - start_seconds) * 1000000)
+                start_time = datetime.time(0,start_minutes, start_seconds, start_milliseconds)
+
+                end_minutes = int(data_im2txt[i+1]['start_time']/60)
+                end_seconds = int(data_im2txt[i+1]['start_time'] - (60 * end_minutes))
+                end_milliseconds = int((data_im2txt[i+1]['start_time'] - (60 * end_minutes) - end_seconds) * 1000000)
+                end_time = datetime.time(0, end_minutes, end_seconds, end_milliseconds)
+                
+                srt_version.append({
+                    "start_time": start_time.strftime('%H:%M:%S,%f'),
+                    "end_time": end_time.strftime('%H:%M:%S,%f'),
+                    "caption": final_captions[i]['caption'],
+                })
 
         i = i + 1
 
@@ -351,11 +386,19 @@ def saveSRT():
 def saveWebVTT():
     saveJson()
 
+    webvtt_file = dirname + "/" + video[:-4] + ".vtt"
+
+    try:
+        if webvtt_file is not None:
+            os.remove(webvtt_file)
+    except FileNotFoundError: 
+        print("File Not Found! Proceeding Anyways.")
+
     webVTT_version = []
 
     for i in range(0,len(final_captions)):
 
-        if len(final_captions) != i:
+        if len(final_captions) != i+1:
             start_minutes = int(final_captions[i]['start_time']/60)
             start_seconds = int(final_captions[i]['start_time'] - (60 * start_minutes))
             start_milliseconds = int((final_captions[i]['start_time'] - (60 * start_minutes) - start_seconds) * 1000000)
@@ -367,31 +410,48 @@ def saveWebVTT():
             end_time = datetime.time(0, end_minutes, end_seconds, end_milliseconds)
 
             webVTT_version.append({
-                "start_time": start_time.strftime('%H:%M:%S,%f'),
-                "end_time": end_time.strftime('%H:%M:%S,%f'),
+                "start_time": start_time.strftime('%M:%S.%f'),
+                "end_time": end_time.strftime('%M:%S.%f'),
                 "caption": final_captions[i]['caption'],            
             })
+        else: 
+            if len(final_captions) == i+1 and len(final_captions) == len(data_im2txt):
+                start_minutes = int(final_captions[i]['start_time']/60)
+                start_seconds = int(final_captions[i]['start_time'] - (60 * start_minutes))
+                start_milliseconds = int((final_captions[i]['start_time'] - (60 * start_minutes) - start_seconds) * 1000000)
+                start_time = datetime.time(0,start_minutes, start_seconds, start_milliseconds)
 
-        else:
-            start_minutes = int(final_captions[i]['start_time']/60)
-            start_seconds = int(final_captions[i]['start_time'] - (60 * start_minutes))
-            start_milliseconds = int((final_captions[i]['start_time'] - (60 * start_minutes) - start_seconds) * 1000000)
-            start_time = datetime.time(0,start_minutes, start_seconds, start_milliseconds)
+                end_minutes = int(duration.decode("utf-8")[3:5])
+                end_seconds = int(duration.decode("utf-8")[6:8])
+                end_milliseconds = int(duration.decode("utf-8")[9:])
+                end_time = datetime.time(0, end_minutes, end_seconds, end_milliseconds)
 
-            end_minutes = int(data_im2txt[i+1]['start_time']/60)
-            end_seconds = int(data_im2txt[i+1]['start_time'] - (60 * end_minutes))
-            end_milliseconds = int((data_im2txt[i+1]['start_time'] - (60 * end_minutes) - end_seconds) * 1000000)
-            end_time = datetime.time(0, end_minutes, end_seconds, end_milliseconds)
+                webVTT_version.append({
+                    "start_time": start_time.strftime('%H:%M:%S,%f'),
+                    "end_time": end_time.strftime('%H:%M:%S,%f'),
+                    "caption": final_captions[i]['caption'],
+                })
+                
+            else:
+                start_minutes = int(final_captions[i]['start_time']/60)
+                start_seconds = int(final_captions[i]['start_time'] - (60 * start_minutes))
+                start_milliseconds = int((final_captions[i]['start_time'] - (60 * start_minutes) - start_seconds) * 1000000)
+                start_time = datetime.time(0,start_minutes, start_seconds, start_milliseconds)
 
-            webVTT_version.append({
-                "start_time": start_time.strftime('%H:%M:%S,%f'),
-                "end_time": end_time.strftime('%H:%M:%S,%f'),
-                "caption": final_captions[i]['caption'],            
-            })
+                end_minutes = int(data_im2txt[i+1]['start_time']/60)
+                end_seconds = int(data_im2txt[i+1]['start_time'] - (60 * end_minutes))
+                end_milliseconds = int((data_im2txt[i+1]['start_time'] - (60 * end_minutes) - end_seconds) * 1000000)
+                end_time = datetime.time(0, end_minutes, end_seconds, end_milliseconds)
+                
+                webVTT_version.append({
+                    "start_time": start_time.strftime('%H:%M:%S,%f'),
+                    "end_time": end_time.strftime('%H:%M:%S,%f'),
+                    "caption": final_captions[i]['caption'],
+                })
 
         i = i + 1
     
-    video_vtt = video + ".vtt"
+    video_vtt = video[:-4] + ".vtt"
 
     with open(video_vtt, 'a') as vtt_file:
         vtt_file.write("WEBVTT \n")
@@ -399,10 +459,14 @@ def saveWebVTT():
 
     for i in range(0, len(webVTT_version)):
         with open(video_vtt, 'a') as vtt_file:
-            vtt_file.write(str(i + 1) + "\n")
             vtt_file.write(str(webVTT_version[i]['start_time'][:-3] + " --> " + str(webVTT_version[i]['end_time'][:-3]) + "\n"))
             vtt_file.write(webVTT_version[i]['caption'] + "\n")
             vtt_file.write("\n")
+
+    print("File Saved!")
+
+
+
 
 # The main part of the GUI (Here we can then adjust into grid from pack!)
 
