@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import messagebox
 from PIL import ImageTk, Image
 from tkinter.filedialog import askdirectory
 import json
@@ -52,16 +53,19 @@ print(dirname)
 # - Then we will convert the JSON file into srt file to be a subtitle in the video.
 
 # Selected Radio Button
-def NewFile():
-    print("New File!")
-
 def OpenFile():
     global dirname
     dirname = askdirectory(initialdir=os.getcwd(), title = "Choose a Directory.") 
     print(dirname)
-    loadJson()
+    kfwtime_final = Path(dirname + "/kfwtime_final.json")
+    
+    if kfwtime_final.exists():
+        load_session = initalpop_out() # 1 or 0
+        loadJson(load_session)
+    else:
+        loadJson(0)
 
-def loadJson():
+def loadJson(load_session):
     global data_im2txt
     global data_imagecaptioning
     global data_neural_nuts
@@ -91,18 +95,16 @@ def loadJson():
     neural_nuts = dirname + '/kfwtime_neural_nuts.json'
     neuraltalk2 = dirname + '/kfwtime_neuraltalk2.json'
     image_captioning = dirname + '/kfwtime_image_captioning.json'
-    kfwtime_final = Path(dirname + "/kfwtime_final.json")
-
-    if kfwtime_final.exists():
+    if load_session == 1:
         kfwtime_final = dirname + '/kfwtime_final.json'
 
         with open(kfwtime_final) as f:
             final_captions = json.load(f)
-        
-        print(len(final_captions))
             
+        print(len(final_captions))
+                
         if len(final_captions) != 0:
-            i = len(final_captions) 
+            i = len(final_captions)-1
 
     # Open the json files
     with open(im2txt_path) as f:
@@ -135,9 +137,19 @@ def firstEnable():
     progress_no = i + 1
     total_no = len(data_im2txt)
 
+    if progress_no == total_no:
+        video_time = str(data_im2txt[i]['start_time']) + " - END "
+    else: 
+        video_time = str(data_im2txt[i]['start_time']) + " - " + str(data_im2txt[i+1]['start_time']-0.01)
+
+    if i == 0:
+        user_selection = ""
+    else: 
+        user_selection = str(final_captions[i]['caption'])
+
     panel.config(state="normal", image=img)
     title.config(state="normal")
-    start_time.config(state="normal", text="Start Time: " + str(data_im2txt[i]['start_time']) + " - " + str(data_im2txt[i+1]['start_time']-0.01))
+    start_time.config(state="normal", text="Start Time: " + video_time)
     video_name.config(state="normal", text="Video File: " + str(video))
     progress.config(state="normal", text= "Progress: " +  str(progress_no) + " / " + str(total_no))
     R1.config(state="normal", text=data_im2txt[i]['caption'],)
@@ -145,9 +157,9 @@ def firstEnable():
     R3.config(state="normal", text=data_neuraltalk2[i]['caption'],)
     R4.config(state="normal", text=data_imagecaptioning[i]['caption'],)
     R5.config(state="normal", text="Type your own captions: ",)
+    label.config(state="normal", text="Selected Caption: " + " ' " + user_selection + " ' ")
     next_button.config(state="normal")
     previous_button.config(state="normal")
-
 
 def sel():
     global i
@@ -310,7 +322,9 @@ def saveJson():
     except FileNotFoundError:
         with open(jsonfile, 'w') as fp:
             json.dump(final_captions, fp)
-    
+
+    messagebox.showinfo("File Saved", "Your JSON File is Saved!")
+
 def saveSRT(): 
     saveJson()
 
@@ -382,6 +396,8 @@ def saveSRT():
             the_file.write(str(srt_version[i]['start_time'][:-3] + " --> " + str(srt_version[i]['end_time'][:-3]) + "\n"))
             the_file.write(srt_version[i]['caption'] + "\n")
             the_file.write("\n")
+
+    messagebox.showinfo("File Saved", "Your srt File is Saved!")
 
 def saveWebVTT():
     saveJson()
@@ -463,10 +479,18 @@ def saveWebVTT():
             vtt_file.write(webVTT_version[i]['caption'] + "\n")
             vtt_file.write("\n")
 
-    print("File Saved!")
+    messagebox.showinfo("File Saved", "Your WebVTT File is Saved!")
 
+def initalpop_out():
+    result = messagebox.askyesno("Load File","Would you like to Load from Previous Session?")
+    value = 0
 
+    if result == True:
+        value = 1
+    else:
+        value = 0
 
+    return value
 
 # The main part of the GUI (Here we can then adjust into grid from pack!)
 
@@ -476,7 +500,6 @@ root.config(menu=menu)
 
 filemenu = Menu(menu)
 menu.add_cascade(label="File", menu=filemenu)
-filemenu.add_command(label="New", command=NewFile) # New Session Rather Than Previous Session
 filemenu.add_command(label="Open...", command=OpenFile) # Load Previous Session
 filemenu.add_command(label="Save as JSON...", command=saveJson) # Save a Json Will be Used for SRT and WebVTT 
 filemenu.add_command(label="Save as SRT...", command=saveSRT)
@@ -501,52 +524,53 @@ y = (hs/2) - (h/2)
 root.geometry('%dx%d+%d+%d' % (w, h, x, y))
 
 panel = Label(root, state=DISABLED)
-panel.grid(row = 0, column= 1, rowspan = 9, padx = 5, pady = 50)
+panel.grid(row = 0, column= 1, rowspan = 9, padx = 5)
 
 video_name = Label(root, state=DISABLED)
-video_name.grid(row = 7, column = 1, rowspan = 9, padx=5, pady = 30)
+video_name.grid(row = 8, column = 1, padx=5, pady = 45)
 
 var = IntVar()
 
 title = Label(root, state=DISABLED, text="Please select the most accurate caption:")
-title.grid(row = 0, column = 2, sticky = W, padx = 5, pady = (50, 0))
+title.grid(row = 0, column = 2, sticky = W, padx = 5, pady = (70, 0))
 
 start_time = Label(root, state=DISABLED)
 start_time.grid(row = 1, column = 2, sticky = W, padx = 5)
 
 progress = Label(root, state=DISABLED)
-progress.grid(row = 2, column = 2, sticky = W)
+progress.grid(row = 2, column = 2, sticky = W, padx = 5)
 
 R1 = Radiobutton(root, state=DISABLED, variable=var, value=1,
                     command=sel)
-R1.grid(row=3, column = 2, sticky = W)
+R1.grid(row=3, column = 2, sticky = W, padx = 5)
 
 R2 = Radiobutton(root, state=DISABLED, variable=var, value=2,
                     command=sel)
-R2.grid(row=4, column = 2, sticky = W)
+R2.grid(row=4, column = 2, sticky = W, padx = 5)
 
 R3 = Radiobutton(root, state=DISABLED, variable=var, value=3,
                     command=sel)
-R3.grid(row=5, column = 2, sticky = W)
+R3.grid(row=5, column = 2, sticky = W, padx = 5)
 
 R4 = Radiobutton(root, state=DISABLED, variable=var, value=4, command=sel)
-R4.grid(row=6, column = 2, sticky = W)
+R4.grid(row=6, column = 2, sticky = W, padx = 5)
 
 R5 = Radiobutton(root, state=DISABLED, variable = var, value=5, command = createEntry)
-R5.grid(row=7, column=2, sticky = W)
+R5.grid(row=7, column=2, sticky = W, padx = 5)
 
 user_caption = Entry(root, width = 45, state=DISABLED)
 user_caption.grid(row=8, column=2, sticky = (N, W), padx = 25, pady = 5)
 
+# Bottom of the Video
+
 label = Label(root)
-label.grid(row=9, column= 1, columnspan = 2, sticky = W+E+N+S)
+label.grid(row=10, column= 1, columnspan = 2, sticky = W+E+N+S)
 
 previous_button = Button(root, text="Previous", state=DISABLED, command=prevImage)
-previous_button.grid(row=10, column = 1, columnspan = 2, padx = 10)
+previous_button.grid(row=11, column = 1 , padx = 30, pady = 20, sticky = E)
 
 next_button = Button(root, text="Next", state=DISABLED, command=nextImage)
-next_button.grid(row = 10, column = 2, columnspan = 2, padx = 20)
-
+next_button.grid(row = 11, column = 2,pady = 20, sticky = W)
 
 
 root.mainloop()
