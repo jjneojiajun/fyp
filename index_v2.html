@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Video Captioning</title>
+    <style type="text/css">
+        #flying_caption_final::before {
+            content: "Caption: ";
+	    } 
+    </style>
+</head>
+<body>
+
+    <div>
+        <video id="video_player" width="352" height="288" controls preload="auto">
+            <source id="vid_source" type="video/mp4" />
+            <track id="vid_subs" label="English" kind="subtitles" type="text/webvtt" srclang="en" default/>
+        </video>
+    </div>
+    
+    <div>
+        <div>
+            <input type="text" id="search_bar" placeholder="Search something here..." />
+            <button id="search_go">Go!</button>
+        </div>
+
+        <br/>
+        <br/>
+        <span id="flying_caption_final"></span>
+    </div>
+    
+    <ul id="result_container"></ul>
+
+<ul id="result_container"></ul>
+
+<script type="text/javascript">
+
+var video_player = document.getElementById('video_player');
+
+var flying_caption_im2txt = document.getElementById('flying_caption_final')
+
+var kfwtimes_final = null;
+
+// http://stackoverflow.com/a/14388512
+function fetchJSONFile(path, callback) {
+    var httpRequest = new XMLHttpRequest();
+    httpRequest.onreadystatechange = function() {
+        if (httpRequest.readyState === 4) {
+            if (httpRequest.status === 200) {
+                var data = JSON.parse(httpRequest.responseText);
+                if (callback) callback(data);
+            }
+        }
+    };
+    httpRequest.open('GET', path);
+    httpRequest.send(); 
+}
+
+function search(text) {
+    while(result_container.lastChild) {
+        result_container.removeChild(result_container.lastChild);
+    }
+
+    kfwtimes_final.forEach(function (keyframe, index) {
+        if(keyframe.caption.indexOf(text) === -1) {
+            return;
+        }
+
+        var anchor = document.createElement('a');
+        anchor.href = '#';
+        anchor.textContent = keyframe.start_time;
+
+        anchor.addEventListener('click', function (event) {
+            video_player.pause();
+            video_player.currentTime = keyframe.start_time;
+            video_player.play();
+        })
+
+        var span = document.createElement('span');
+        span.textContent = " - " + keyframe.caption;
+
+        var li = document.createElement('li');
+        li.appendChild(anchor);
+        li.appendChild(span);
+
+        result_container.appendChild(li);
+    });
+}
+
+search_bar.addEventListener('keypress', function (event) {
+    if(event.keyCode !== 13) {
+        return;
+    }
+
+    var text = search_bar.value;
+    search(text);
+})
+
+search_go.addEventListener('click', function (event) {
+    var text = search_bar.value;
+    search(text);
+})
+
+function lowerBound(time) {
+    var left = 0,
+        right = kfwtimes_final.length - 1; // inclusive
+    while(left < right) {
+        var mid = (left + right) / 2 | 0;
+        if(time < kfwtimes_final[mid + 1].start_time) {
+            right = mid;
+        } else {
+            left = mid + 1;
+        }
+    }
+    return left;
+}
+
+video_player.addEventListener('timeupdate', function (event) {
+    var idx = lowerBound(video_player.currentTime);
+    flying_caption_final.textContent = kfwtimes_final[idx].caption
+
+})
+
+video_player.addEventListener('loadedmetadata', function (event) {
+    word_counts = {};
+    word_counts_array = [];
+    kfwtimes_final.forEach(function (kfw) {
+        words = kfw.caption.split(' ')
+        words.forEach(function (word) {
+            if(!(word in word_counts)) word_counts[word] = 0;
+            ++word_counts[word];
+        })
+    })
+    for(var word in word_counts) {
+        word_counts_array.push({
+            word: word,
+            count: word_counts[word]
+        })
+    }
+    word_counts_array.sort(function (a, b) {
+        return b.count - a.count;
+    })
+
+    stats.innerHTML = ""; // oh dear lord forgive me
+    var tn = document.createTextNode('Number of unique words: ' + word_counts_array.length + '\n');
+    stats.appendChild(tn);
+    word_counts_array.forEach(function (pair) {
+        var tn = document.createTextNode(pair.word + ': ' + pair.count + '\n')
+        stats.appendChild(tn);
+    })
+})
+
+</script>
+<script type="text/javascript" src="./loadvid.js"></script>
+
+</body>
+</html>
