@@ -18,10 +18,15 @@ We create a "Production House" which consist of 4 image captioning models where 
 
 After these 4 json files are generated, we will then move onto the graphic user interface where the user select the most accurate captions or type their own captions to be stored into a final json file which we after convert the json file to a srt file.
 
-### What is a SRT File?
+## What is a SRT File?
 If you are not from a video production company or deal with subtitles before. 
 
 The srt file will allow us to edit the start time and end time as well as the caption as well. However it is not recommended since we have done that after the GUI.
+
+## WebVTT File
+The captions that we constantly see in YouTube and Facebook are done via the WebVTT File. A simple example is from the image below:
+
+![alt text](https://i.imgur.com/f3j2ZxS.png)
 
 # GUI Example 
 Note that this is not the complete one. This is just an example that i did thus far using python tkinter code which is available to read at this repository at fyp_gui. Note that it will be different for different OS.
@@ -34,6 +39,7 @@ As of 16th August 2018, these are the functionalities:
 * Save Current Session 
 * Load from Previous Session 
 * User Type Captions
+* Windows Pop Out
 
 # Results (Video)
 After creating srt file, we will then be able to add the srt file into the video. Tested in VLC ![VLC Website](https://www.videolan.org/vlc/index.html).
@@ -45,6 +51,10 @@ Video tested with Singapore Airlines Safety Video
 
 # Progamming Languages
 The main programming language is using bash and python 3.6
+
+# Process Flow
+The process flow maybe adjusted accordingly but this is the rough outlook for the process.
+![alt text](https://i.imgur.com/ULMERSl.png)
 
 # Credits 
 Credits got to go to credit due. 

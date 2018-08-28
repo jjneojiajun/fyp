@@ -1,3 +1,6 @@
+mv ./index.html ./index.html.backup
+mv ./index_v2.html index.html
+
 shopt -s nullglob
 for file in *.mp4; do 
     video="$file"
@@ -8,7 +11,7 @@ filename="${video%.*}"
 cat << EOF > loadvid.js
 fetchJSONFile('kfwtime_final.json', function (data) {
     // Pass it to global variable
-    kfwtimes_im2txt = data;
+    kfwtimes_final = data;
 });
 
 video_player.src="./$video"
