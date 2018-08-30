@@ -313,8 +313,8 @@ def saveJson():
 
     # Remove the past json file
     try:
-        if dirname + '/kfwtime_final.json' is not None:
-            os.remove("kfwtime_final.json")
+        if jsonfile is not None:
+            os.remove(jsonfile)
 
         with open(jsonfile, 'w') as fp:
             json.dump(final_captions, fp)
@@ -323,14 +323,18 @@ def saveJson():
         with open(jsonfile, 'w') as fp:
             json.dump(final_captions, fp)
 
+    os.system('./gui_caption.sh')
+
     messagebox.showinfo("File Saved", "Your JSON File is Saved!")
 
 def saveSRT(): 
     saveJson()
 
+    srt_file = dirname + "/" + video[:-4] + ".srt"
+
     try:
-        if dirname + '/test.srt' is not None:
-            os.remove("test.srt")
+        if srt_file is not None:
+            os.remove(srt_file)
     except FileNotFoundError: 
         print("File Not Found! Proceeding Anyways.")
 
@@ -391,7 +395,7 @@ def saveSRT():
         i = i + 1
 
     for i in range(0, len(srt_version)):
-        with open('test.srt', 'a') as the_file:
+        with open(srt_file, 'a') as the_file:
             the_file.write(str(i + 1) + "\n")
             the_file.write(str(srt_version[i]['start_time'][:-3] + " --> " + str(srt_version[i]['end_time'][:-3]) + "\n"))
             the_file.write(srt_version[i]['caption'] + "\n")
@@ -479,7 +483,19 @@ def saveWebVTT():
             vtt_file.write(webVTT_version[i]['caption'] + "\n")
             vtt_file.write("\n")
 
-    messagebox.showinfo("File Saved", "Your WebVTT File is Saved!")
+    loadvid = Path(dirname + "/loadvid.js")
+    
+    # To allow for user to add the webvtt file into javascript.
+    # Edited the code to test whether it will add the line or not.
+    with open(loadvid, 'r+') as loadvidjs:
+        for x in loadvidjs:
+            if str(x) == "vid_subs.src=" + "'./" + video[:-4] + ".vtt'":
+                break
+            else:
+                loadvidjs.write("vid_subs.src=" + "'./" + video[:-4] + ".vtt'")
+
+    messagebox.showinfo("File Saved", "Your WebVTT File is Saved and implemented into the web!")
+
 
 def initalpop_out():
     result = messagebox.askyesno("Load File","Would you like to Load from Previous Session?")
@@ -572,5 +588,5 @@ previous_button.grid(row=11, column = 1 , padx = 30, pady = 20, sticky = E)
 next_button = Button(root, text="Next", state=DISABLED, command=nextImage)
 next_button.grid(row = 11, column = 2,pady = 20, sticky = W)
 
-
+root.title("Image Captioning Selection")
 root.mainloop()

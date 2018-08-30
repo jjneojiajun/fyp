@@ -1,5 +1,11 @@
-mv ./index.html ./index.html.backup
-mv ./index_v2.html index.html
+file="./index_v2.html"
+
+if [ -f "$file" ];
+then
+    mv ./index.html ./index.html.backup
+    mv ./index_v2.html index.html
+fi
+
 
 shopt -s nullglob
 for file in *.mp4; do 
