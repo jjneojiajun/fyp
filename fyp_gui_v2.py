@@ -27,6 +27,15 @@ data_neural_nuts = []
 data_neuraltalk2 = []
 data_imagecaptioning = []
 
+
+im2txt_count = 0
+neural_nuts_count = 0
+neuraltalk2_count = 0
+imagecaptioning_count = 0
+user_type_count = 0
+
+final_count = []
+
 print(dirname)
 
 ### Whats next?
@@ -76,13 +85,19 @@ def loadJson(load_session):
     global length
     global video
     global duration
+    global im2txt_count
+    global neural_nuts_count
+    global neuraltalk2_count
+    global imagecaptioning_count
+    global user_type_count
 
     for file in os.listdir(dirname):
         if file.endswith(".mp4"):
             video = file
     
     result = subprocess.Popen(["ffprobe", video],
-        stdout = subprocess.PIPE, stderr = subprocess.STDOUT
+        stdout = subprocess.PIPE, stderr = subprocess.STDOUT,
+        shell = True
     )
 
     for x in result.stdout.readlines():
@@ -97,10 +112,20 @@ def loadJson(load_session):
     image_captioning = dirname + '/kfwtime_image_captioning.json'
     if load_session == 1:
         kfwtime_final = dirname + '/kfwtime_final.json'
+        count_json = dirname + "/count.json"
 
         with open(kfwtime_final) as f:
             final_captions = json.load(f)
             
+        with open(count_json) as f:
+            count_data = json.load(f)
+
+        im2txt_count = count_data[0]['im2txt_count']
+        neural_nuts_count = count_data[0]['neural_nuts_count']
+        neuraltalk2_count = count_data[0]['neuraltalk2_count']
+        imagecaptioning_count = count_data[0]['imagecaptioning_count']
+        user_type_count = count_data[0]['user_type_count']
+
         print(len(final_captions))
                 
         if len(final_captions) != 0:
@@ -152,10 +177,10 @@ def firstEnable():
     start_time.config(state="normal", text="Start Time: " + video_time)
     video_name.config(state="normal", text="Video File: " + str(video))
     progress.config(state="normal", text= "Progress: " +  str(progress_no) + " / " + str(total_no))
-    R1.config(state="normal", text=data_im2txt[i]['caption'],)
-    R2.config(state="normal", text=data_neural_nuts[i]['caption'],)
-    R3.config(state="normal", text=data_neuraltalk2[i]['caption'],)
-    R4.config(state="normal", text=data_imagecaptioning[i]['caption'],)
+    R1.config(state="normal", text="im2txt: " + data_im2txt[i]['caption'],)
+    R2.config(state="normal", text="neural_nuts: " + data_neural_nuts[i]['caption'],)
+    R3.config(state="normal", text="neuraltalk2: " + data_neuraltalk2[i]['caption'],)
+    R4.config(state="normal", text="imagecaptioning: " + data_imagecaptioning[i]['caption'],)
     R5.config(state="normal", text="Type your own captions: ",)
     label.config(state="normal", text="Selected Caption: " + " ' " + user_selection + " ' ")
     next_button.config(state="normal")
@@ -192,6 +217,11 @@ def disableEntry():
 # Next Button is pressed! 
 def nextImage():
     global selection
+    global neural_nuts_count
+    global neuraltalk2_count
+    global im2txt_count
+    global imagecaptioning_count
+    global user_type_count
 
     previous_button.config(state="normal")
 
@@ -214,6 +244,17 @@ def nextImage():
                 "frame_no":data_im2txt[i]['frame_no'],
                 "caption":selection
             }
+
+        if var.get() == 1: 
+            im2txt_count = im2txt_count + 1
+        elif var.get() == 2:
+            neural_nuts_count = neural_nuts_count + 1
+        elif var.get() == 3:
+            neuraltalk2_count = neuraltalk2_count + 1
+        elif var.get() == 4:
+            imagecaptioning_count = imagecaptioning_count + 1
+        else:
+            user_type_count = user_type_count + 1
 
         selection = ""
         nextImageProcess()
@@ -269,10 +310,10 @@ def nextImageProcess():
             start_time.configure(text="Start Time: " + str(data_im2txt[i]['start_time'])[0:3] + " - END")
             progress.config(text= "Progress: " +  str(total_no) + " / " + str(total_no))
 
-        R1.configure(text = data_im2txt[i]['caption'])
-        R2.configure(text = data_neural_nuts[i]['caption'])
-        R3.configure(text = data_neuraltalk2[i]['caption'])
-        R4.configure(text = data_imagecaptioning[i]['caption'])
+        R1.configure(text = "im2txt: " + data_im2txt[i]['caption'])
+        R2.configure(text = "neural_nuts: " + data_neural_nuts[i]['caption'])
+        R3.configure(text = "neuraltalk2: " + data_neuraltalk2[i]['caption'])
+        R4.configure(text = "imagecaptioning: " + data_imagecaptioning[i]['caption'])
             
         label.configure(text = "")            
     else:
@@ -300,10 +341,10 @@ def prevImage():
     else:
         start_time.configure(text="Start Time: " + str(data_im2txt[i]['start_time']))
 
-    R1.configure(text = data_im2txt[i]['caption'])
-    R2.configure(text = data_neural_nuts[i]['caption'])
-    R3.configure(text = data_neuraltalk2[i]['caption'])
-    R4.configure(text = data_imagecaptioning[i]['caption'])
+    R1.configure(text = "im2txt: " + data_im2txt[i]['caption'])
+    R2.configure(text = "neural_nuts: " + data_neural_nuts[i]['caption'])
+    R3.configure(text = "neuraltalk2: " + data_neuraltalk2[i]['caption'])
+    R4.configure(text = "imagecaptioning: " + data_imagecaptioning[i]['caption'])
             
     label.config(text = "Selected Caption: " + " ' " + final_captions[i]['caption'] + " ' ")
 
@@ -323,7 +364,29 @@ def saveJson():
         with open(jsonfile, 'w') as fp:
             json.dump(final_captions, fp)
 
-    os.system('./gui_caption.sh')
+    # For the counts
+
+    final_count.append({
+        "im2txt_count": im2txt_count,
+        "neural_nuts_count": neural_nuts_count,
+        "neuraltalk2_count": neuraltalk2_count,
+        "imagecaptioning_count": imagecaptioning_count,
+        "user_type_count": user_type_count
+    })
+
+    countfile = dirname + "/count.json"
+    try:
+        if countfile is not None:
+            os.remove(countfile)
+
+        with open(countfile, 'w') as fp:
+            json.dump(final_count, fp)
+
+    except FileNotFoundError:
+        with open(countfile, 'w') as fp:
+            json.dump(final_count, fp)
+
+    # os.system('./gui_caption.sh')
 
     messagebox.showinfo("File Saved", "Your JSON File is Saved!")
 

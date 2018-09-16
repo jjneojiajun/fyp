@@ -4,6 +4,7 @@ if [ -f "$file" ];
 then
     mv ./index.html ./index.html.backup
     mv ./index_v2.html index.html
+    mv ./loadvid.js ./loadvid.js.backup
 fi
 
 
