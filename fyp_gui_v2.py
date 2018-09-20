@@ -97,7 +97,6 @@ def loadJson(load_session):
     
     result = subprocess.Popen(["ffprobe", video],
         stdout = subprocess.PIPE, stderr = subprocess.STDOUT,
-        shell = True
     )
 
     for x in result.stdout.readlines():
@@ -148,6 +147,7 @@ def loadJson(load_session):
     path = data_im2txt[i]['relpath']
     length = len(data_im2txt)
     print(length)
+    i = 0
 
     # Image File
     img = Image.open(path)
@@ -184,7 +184,7 @@ def firstEnable():
     R5.config(state="normal", text="Type your own captions: ",)
     label.config(state="normal", text="Selected Caption: " + " ' " + user_selection + " ' ")
     next_button.config(state="normal")
-    previous_button.config(state="normal")
+    previous_button.config(state="disabled")
 
 def sel():
     global i
@@ -223,10 +223,10 @@ def nextImage():
     global imagecaptioning_count
     global user_type_count
 
-    previous_button.config(state="normal")
-
-    if (selection == "" and user_caption == ""):
+    if (selection == "" or user_caption == ""):
         label.config(text="Please select or create a caption!")
+        previous_button.config(state="disabled")
+
 
     # User Selected caption from radio buttons
     elif selection:
@@ -257,6 +257,7 @@ def nextImage():
             user_type_count = user_type_count + 1
 
         selection = ""
+        previous_button.config(state="normal")
         nextImageProcess()
 
     # User's Typed Caption
@@ -279,9 +280,10 @@ def nextImage():
         # pprint(final_captions)
         selection = ""
         user_caption.delete(0, 'end')
+        previous_button.config(state="normal")
         nextImageProcess()
     
-    pprint(final_captions)
+    # pprint(final_captions)
 
 # This is pretty much duplicate code if i re-use it, thus i created a function simply just for that.
 def nextImageProcess():
@@ -321,8 +323,11 @@ def nextImageProcess():
     
 def prevImage():
     global i
+    global progress_no 
+    total_no = len(data_im2txt)
 
     i = i - 1
+    progress_no = progress_no - 1
 
     if i == 0:
         previous_button.config(state="disabled")
@@ -338,8 +343,11 @@ def prevImage():
 
     if (i < length-1):
         start_time.configure(text="Start Time: " + str(data_im2txt[i]['start_time']) + " - " + str(data_im2txt[i+1]['start_time']-0.01))
+        progress.config(text= "Progress: " +  str(progress_no) + " / " + str(total_no))
     else:
         start_time.configure(text="Start Time: " + str(data_im2txt[i]['start_time']))
+        progress.config(text= "Progress: " +  str(progress_no) + " / " + str(total_no))
+
 
     R1.configure(text = "im2txt: " + data_im2txt[i]['caption'])
     R2.configure(text = "neural_nuts: " + data_neural_nuts[i]['caption'])
@@ -386,7 +394,7 @@ def saveJson():
         with open(countfile, 'w') as fp:
             json.dump(final_count, fp)
 
-    # os.system('./gui_caption.sh')
+    os.system('./gui_caption.sh')
 
     messagebox.showinfo("File Saved", "Your JSON File is Saved!")
 
@@ -548,14 +556,14 @@ def saveWebVTT():
 
     loadvid = Path(dirname + "/loadvid.js")
     
-    # To allow for user to add the webvtt file into javascript.
-    # Edited the code to test whether it will add the line or not.
-    with open(loadvid, 'r+') as loadvidjs:
-        for x in loadvidjs:
-            if str(x) == "vid_subs.src=" + "'./" + video[:-4] + ".vtt'":
-                break
-            else:
-                loadvidjs.write("vid_subs.src=" + "'./" + video[:-4] + ".vtt'")
+    # # To allow for user to add the webvtt file into javascript.
+    # # Edited the code to test whether it will add the line or not.
+    # with open(loadvid, 'r+') as loadvidjs:
+    #     for x in loadvidjs:
+    #         if str(x) == "vid_subs.src=" + "'./" + video[:-4] + ".vtt'":
+    #             break
+    #         else:
+    #             loadvidjs.write("vid_subs.src=" + "'./" + video[:-4] + ".vtt'")
 
     messagebox.showinfo("File Saved", "Your WebVTT File is Saved and implemented into the web!")
 
