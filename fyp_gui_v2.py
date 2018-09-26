@@ -223,10 +223,8 @@ def nextImage():
     global imagecaptioning_count
     global user_type_count
 
-    if (selection == "" or user_caption == ""):
+    if (selection == "" and user_caption.get() == ""):
         label.config(text="Please select or create a caption!")
-        previous_button.config(state="disabled")
-
 
     # User Selected caption from radio buttons
     elif selection:
@@ -283,7 +281,7 @@ def nextImage():
         previous_button.config(state="normal")
         nextImageProcess()
     
-    # pprint(final_captions)
+    pprint(final_captions)
 
 # This is pretty much duplicate code if i re-use it, thus i created a function simply just for that.
 def nextImageProcess():
