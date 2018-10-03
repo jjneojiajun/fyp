@@ -21,6 +21,7 @@ video = ""
 length = 0
 progress_no = 0
 duration = ""
+ntu_image = ""
 
 data_im2txt = []
 data_neural_nuts = []
@@ -90,6 +91,7 @@ def loadJson(load_session):
     global neuraltalk2_count
     global imagecaptioning_count
     global user_type_count
+    global ntu_image
 
     for file in os.listdir(dirname):
         if file.endswith(".mp4"):
@@ -97,6 +99,7 @@ def loadJson(load_session):
     
     result = subprocess.Popen(["ffprobe", video],
         stdout = subprocess.PIPE, stderr = subprocess.STDOUT,
+        shell=False
     )
 
     for x in result.stdout.readlines():
@@ -104,7 +107,7 @@ def loadJson(load_session):
           duration = (x[12:23])
           break
 
-    # import the json files into the GUI
+    # import the json files & image file into the GUI
     im2txt_path = dirname + '/kfwtime_im2txt.json'
     neural_nuts = dirname + '/kfwtime_neural_nuts.json'
     neuraltalk2 = dirname + '/kfwtime_neuraltalk2.json'
@@ -251,7 +254,7 @@ def nextImage():
             neuraltalk2_count = neuraltalk2_count + 1
         elif var.get() == 4:
             imagecaptioning_count = imagecaptioning_count + 1
-        else:
+        elif var.get() == 5:
             user_type_count = user_type_count + 1
 
         selection = ""
@@ -594,7 +597,7 @@ filemenu.add_command(label="Exit", command=root.quit)
         
 # Defaulting the window
 w = 850 # width for the Tk root
-h = 450 # height for the Tk root
+h = 650 # height for the Tk root
 
 # get screen width and height
 ws = root.winfo_screenwidth() # width of the screen
@@ -608,54 +611,68 @@ y = (hs/2) - (h/2)
 # and where it is placed
 root.geometry('%dx%d+%d+%d' % (w, h, x, y))
 
-panel = Label(root, state=DISABLED)
-panel.grid(row = 0, column= 1, rowspan = 9, padx = 5)
+space = Label(root, text="")
+space.grid(row = 0 , column = 1, columnspan = 2)
+
+panel = Label(root, state=DISABLED, anchor='n')
+panel.grid(row = 2, column= 1, rowspan = 10, padx = 5)
 
 video_name = Label(root, state=DISABLED)
-video_name.grid(row = 8, column = 1, padx=5, pady = 45)
+video_name.grid(row = 10, column = 1, padx=5, pady = 45)
 
 var = IntVar()
 
 title = Label(root, state=DISABLED, text="Please select the most accurate caption:")
-title.grid(row = 0, column = 2, sticky = W, padx = 5, pady = (70, 0))
+title.grid(row = 2, column = 2, sticky = W, padx = 5, pady = (50, 0))
 
 start_time = Label(root, state=DISABLED)
-start_time.grid(row = 1, column = 2, sticky = W, padx = 5)
+start_time.grid(row = 3, column = 2, sticky = W, padx = 5)
 
 progress = Label(root, state=DISABLED)
-progress.grid(row = 2, column = 2, sticky = W, padx = 5)
+progress.grid(row = 4, column = 2, sticky = W, padx = 5)
 
 R1 = Radiobutton(root, state=DISABLED, variable=var, value=1,
                     command=sel)
-R1.grid(row=3, column = 2, sticky = W, padx = 5)
+R1.grid(row=5, column = 2, sticky = W, padx = 5)
 
 R2 = Radiobutton(root, state=DISABLED, variable=var, value=2,
                     command=sel)
-R2.grid(row=4, column = 2, sticky = W, padx = 5)
+R2.grid(row=6, column = 2, sticky = W, padx = 5)
 
 R3 = Radiobutton(root, state=DISABLED, variable=var, value=3,
                     command=sel)
-R3.grid(row=5, column = 2, sticky = W, padx = 5)
+R3.grid(row=7, column = 2, sticky = W, padx = 5)
 
 R4 = Radiobutton(root, state=DISABLED, variable=var, value=4, command=sel)
-R4.grid(row=6, column = 2, sticky = W, padx = 5)
+R4.grid(row=8, column = 2, sticky = W, padx = 5)
 
 R5 = Radiobutton(root, state=DISABLED, variable = var, value=5, command = createEntry)
-R5.grid(row=7, column=2, sticky = W, padx = 5)
+R5.grid(row=9, column=2, sticky = W, padx = 5)
 
 user_caption = Entry(root, width = 45, state=DISABLED)
-user_caption.grid(row=8, column=2, sticky = (N, W), padx = 25, pady = 5)
+user_caption.grid(row=10, column=2, sticky = (N, W), padx = 25, pady = 5)
 
 # Bottom of the Video
 
 label = Label(root)
-label.grid(row=10, column= 1, columnspan = 2, sticky = W+E+N+S)
+label.grid(row=12, column= 1, columnspan = 2, sticky = W+E+N+S)
 
-previous_button = Button(root, text="Previous", state=DISABLED, command=prevImage)
-previous_button.grid(row=11, column = 1 , padx = 30, pady = 20, sticky = E)
+previous_button = Button(root, text="Previous", state=DISABLED, command=prevImage, anchor='e')
+previous_button.grid(row=13, column = 1 , padx = 5, pady = 20, sticky='e')
 
-next_button = Button(root, text="Next", state=DISABLED, command=nextImage)
-next_button.grid(row = 11, column = 2,pady = 20, sticky = W)
+next_button = Button(root, text="Next", state=DISABLED, command=nextImage, anchor='w')
+next_button.grid(row = 13, column = 2, pady = 20, sticky='w')
+
+ntu_image_path = "./ntu.jpg"
+ntu_image = Image.open(ntu_image_path)
+ntu_image = ntu_image.resize((200, 72), Image.ANTIALIAS)
+ntu_image = ImageTk.PhotoImage(ntu_image)
+
+ntu_logo = Label(root, image=ntu_image, anchor='e')
+ntu_logo.grid(row = 1, column = 1, padx = 5, pady = 10)
+
+credit = Label(root, text="Created By: Jia Jun", anchor = 'w')
+credit.grid(row = 1, column = 2, padx = 5, pady = 10)
 
 root.title("Image Captioning Selection")
 root.mainloop()
