@@ -150,8 +150,7 @@ def loadJson(load_session):
     path = data_im2txt[i]['relpath']
     length = len(data_im2txt)
     print(length)
-    i = 0
-
+    
     # Image File
     img = Image.open(path)
     img = img.resize((350, 197), Image.ANTIALIAS)
